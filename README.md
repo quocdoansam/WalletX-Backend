@@ -18,5 +18,3 @@
   - `spring-security-crypto`
   - `spring-boot-starter-oauth2-resource-server`
   - `spring-boot-starter-validation`
-## Reactjs - TypeScript
-- **Updating ...**
