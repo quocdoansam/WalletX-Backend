@@ -4,15 +4,16 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.quocdoansam.walletx.dto.request.UserCreationRequest;
 import com.quocdoansam.walletx.dto.response.UserResponse;
 import com.quocdoansam.walletx.entity.User;
+import com.quocdoansam.walletx.enums.ErrorMessage;
 import com.quocdoansam.walletx.enums.Role;
-import com.quocdoansam.walletx.exception.AppException;
-import com.quocdoansam.walletx.exception.ErrorCode;
+import com.quocdoansam.walletx.exception.BaseException;
 import com.quocdoansam.walletx.mapper.UserMapper;
 import com.quocdoansam.walletx.repository.UserRepository;
 
@@ -33,7 +34,7 @@ public class UserService {
 
     public UserResponse create(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new BaseException(ErrorMessage.USERNAME_EXISTED);
         }
 
         User user = userMapper.toCreationUser(request);
@@ -53,7 +54,7 @@ public class UserService {
         return userMapper
                 .toUserResponse(userRepository
                         .findByUsername(username)
-                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
+                        .orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND)));
     }
 
     public List<UserResponse> readAll() {
@@ -62,5 +63,12 @@ public class UserService {
                 .stream()
                 .map(userMapper::toUserResponse)
                 .toList();
+    }
+
+    public UserResponse me() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userMapper.toUserResponse(userRepository.findByUsername(username)
+                .orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND)));
     }
 }
