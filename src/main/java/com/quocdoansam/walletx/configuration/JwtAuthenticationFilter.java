@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = extractTokenFromCookie(request);
-        System.out.println("Token from Cookie: " + token);
 
         if (token != null) {
             try {
@@ -45,9 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Authentication authentication = new JwtAuthenticationToken(jwt);
                 Authentication authentication = jwtAuthenticationConverter.convert(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                System.out.println("Authentication set: " + authentication);
             } catch (Exception e) {
-                System.out.println("JWT Error: " + e.getMessage());
                 SecurityContextHolder.clearContext();
                 return;
             }
