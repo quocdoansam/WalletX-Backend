@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quocdoansam.walletx.dto.request.UserCreationRequest;
-import com.quocdoansam.walletx.dto.response.ApiResponse;
 import com.quocdoansam.walletx.dto.response.BaseResponse;
 import com.quocdoansam.walletx.dto.response.UserResponse;
 import com.quocdoansam.walletx.enums.ErrorMessage;
