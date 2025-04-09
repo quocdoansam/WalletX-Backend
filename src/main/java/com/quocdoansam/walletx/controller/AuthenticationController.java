@@ -25,7 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -83,7 +82,7 @@ public class AuthenticationController {
     // return ResponseEntity.ok(Map.of("authenticated", true));
     // }
 
-    @GetMapping() // Authorization
+    @PostMapping() // Authorization
     public ResponseEntity<BaseResponse<AuthResponse>> checkAuth(Authentication authentication) {
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
                 && !(authentication instanceof AnonymousAuthenticationToken);

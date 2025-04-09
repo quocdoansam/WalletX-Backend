@@ -35,7 +35,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityConfig {
 
-    final String[] PUBLIC_ENDPOINTS = { "/auth/token", "/auth/introspect", "/users" };
+    final String[] PUBLIC_ENDPOINTS = { "/auth/token", "/auth/introspect", "/auth", "/users" };
     final String[] ADMIN_ENDPOINTS = { "/users" };
 
     @Value("${jwt.signerKey}")
