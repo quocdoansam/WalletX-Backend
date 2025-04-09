@@ -35,7 +35,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityConfig {
 
-    final String[] PUBLIC_ENDPOINTS = { "/auth/token", "/auth/introspect", "/auth", "/users" };
+    final String[] PUBLIC_POST_ENDPOINTS = { "/auth/token", "/auth/introspect" };
+    final String[] PUBLIC_GET_ENDPOINTS = { "/{username}", "/auth" };
     final String[] ADMIN_ENDPOINTS = { "/users" };
 
     @Value("${jwt.signerKey}")
@@ -47,13 +48,11 @@ public class SecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
+
                         .requestMatchers(HttpMethod.GET, ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated());
-
-        // httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
-        //         .jwt(jwt -> jwt.decoder(jwtDecoder())
-        //                 .jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         httpSecurity.csrf(csrf -> csrf.disable());
 
