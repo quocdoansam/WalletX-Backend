@@ -49,11 +49,11 @@ public class UserController {
                 .getAuthentication()
                 .getName();
 
-        UserResponse userResponse = userService.read(username);
-
         if (!currentUsername.equals(username)) {
             throw new BaseException(ErrorMessage.ACCESS_DENIED);
         }
+
+        UserResponse userResponse = userService.read(username);
 
         return ResponseEntity.ok(
                 BaseResponse.<UserResponse>builder()
