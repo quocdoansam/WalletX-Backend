@@ -26,8 +26,8 @@ import com.quocdoansam.walletx.dto.request.IntrospectRequest;
 import com.quocdoansam.walletx.dto.response.AuthenticationResponse;
 import com.quocdoansam.walletx.dto.response.IntrospectResponse;
 import com.quocdoansam.walletx.entity.User;
-import com.quocdoansam.walletx.exception.AppException;
-import com.quocdoansam.walletx.exception.ErrorCode;
+import com.quocdoansam.walletx.enums.ErrorMessage;
+import com.quocdoansam.walletx.exception.BaseException;
 import com.quocdoansam.walletx.repository.UserRepository;
 
 import lombok.AccessLevel;
@@ -66,12 +66,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository
                 .findByUsername(request.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+                .orElseThrow(() -> new BaseException(ErrorMessage.WRONG_CREDENTIALS));
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new BaseException(ErrorMessage.WRONG_CREDENTIALS);
         }
 
         var token = generateToken(user);
