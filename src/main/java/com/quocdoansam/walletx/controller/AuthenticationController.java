@@ -64,7 +64,7 @@ public class AuthenticationController {
                 .build();
     }
 
-    @GetMapping("/check")
+    @GetMapping()
     public ResponseEntity<?> checkAuth(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("authenticated", false));
